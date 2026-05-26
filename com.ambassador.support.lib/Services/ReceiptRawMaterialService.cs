@@ -71,14 +71,14 @@ namespace com.ambassador.support.lib.Services
                                 SmallQuantity = (decimal)data["SmallQuantity"],
                                 DOCurrencyCode = data["DOCurrencyCode"].ToString(),
                                 Amount = (decimal)data["Amount"],
-                                StorageName = "GUDANG AG2",
+                                StorageName = "GUDANG AG",
                                 SupplierName = "-",
                                 Country = data["Country"].ToString(),
                                 DeletedAgent = data["DeletedAgent"].ToString(),
                                 HsCode = data["HsCode"].ToString() == "" ? "-" : data["HsCode"].ToString(),
                                 RecordDate = data["RecordDate"].ToString()
-                            }
-                        ;
+                            };
+
                             reportData.Add(view);
                         }
                     }
