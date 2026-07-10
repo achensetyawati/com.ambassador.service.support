@@ -119,7 +119,10 @@ namespace com.ambassador.support.lib.Services
 
                 if (!exceptionBCNo.Contains(a.BeacukaiNo))
                 {
-                    a.ProductName = remark != null ? string.Concat(/*a.ProductName, " - ",*/ Composition) : a.ProductName;
+                    if(a.ProductName== remark.Name && a.ProductCode == remark.Code)
+                    {
+                        a.ProductName = remark != null ? string.Concat(/*a.ProductName, " - ",*/ Composition) : a.ProductName;
+                    }
                 }
                 else
                 {
