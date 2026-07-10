@@ -43,13 +43,15 @@ namespace com.ambassador.support.lib.Services
                         "declare @StartDate datetime = '" + d1 + "' declare @EndDate datetime = '" + d2 + "' " +
                         "select distinct e.CustomsType,e.BeacukaiNo,convert(date,dateadd(hour,7,e.BeacukaiDate)) as BCDate," +
                         "f.URNNo,convert(date,dateadd(hour,7,f.ReceiptDate)) as URNDate, a.DOCurrencyCode," +
-                        "sum(cast((g.PricePerDealUnit * g.ReceiptQuantity) as decimal(18,2))) as Amount,a.SupplierName,a.Country, " +
+                        "a.SupplierName,a.Country, " +
                         "c.ProductSeries,c.HsCode,a.RecordDate, c.DeletedAgent," +
                         "COALESCE(NULLIF(g.PIBProductCode, ''), g.ProductCode) AS ProductCode," +
                         "COALESCE(NULLIF(g.PIBProductName, ''), g.ProductName) AS ProductName, " +
                         "COALESCE(NULLIF(g.PIBUom, ''), g.SmallUomUnit) AS SmallUomUnit," +
-                        "SUM(CASE WHEN g.PIBConversion IS NOT NULL AND g.PIBConversion <> 0 THEN g.PIBConversion * g.SmallQuantity" +
-                        " ELSE g.SmallQuantity END ) AS SmallQuantity" +
+                        "SUM(CASE WHEN g.PIBQuantity IS NOT NULL AND g.PIBQuantity <> 0 THEN g.PIBQuantity" +
+                        " ELSE g.SmallQuantity END ) AS SmallQuantity," +
+                        "SUM(CASE WHEN g.PIBValue IS NOT NULL AND g.PIBValue <> 0 THEN g.PIBValue " +
+                        "ELSE CAST((g.PricePerDealUnit * g.ReceiptQuantity) AS DECIMAL(18,2)) END) AS Amount " +
                         "from GarmentDeliveryOrders a join GarmentDeliveryOrderItems b on a.id=b.GarmentDOId " +
                         "join GarmentDeliveryOrderDetails c on b.id=c.GarmentDOItemId " +
                         "join GarmentBeacukaiItems d on d.GarmentDOId=a.id join GarmentBeacukais e on e.id=d.BeacukaiId " +
@@ -59,7 +61,7 @@ namespace com.ambassador.support.lib.Services
                         "and e.IsDeleted=0 and f.IsDeleted=0 and g.IsDeleted=0 " +
                         "group by e.CustomsType,e.BeacukaiNo,e.BeacukaiDate,f.URNNo,f.ReceiptDate,g.ProductCode,g.ProductName,g.SmallUomUnit," +
                         "a.DOCurrencyCode,a.SupplierName,a.Country,c.ProductSeries,c.HsCode,a.RecordDate,c.DeletedAgent, " +
-                        "g.PIBConversion, g.PIBUom, g.PIBProductName, g.PIBProductCode  " +
+                        " g.PIBUom, g.PIBProductName, g.PIBProductCode  " +
                         "order by BCDate asc", conn))
 
                     {
